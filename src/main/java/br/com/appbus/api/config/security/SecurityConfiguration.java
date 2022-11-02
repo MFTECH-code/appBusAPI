@@ -19,23 +19,27 @@ public class SecurityConfiguration {
         http.httpBasic()
                 .and()
                 .authorizeHttpRequests()
-                .anyRequest().permitAll()
-                //.anyRequest().denyAll()
+                .antMatchers(HttpMethod.GET, "/api/user").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/user/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/h2/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/h2/**").permitAll()
+                .anyRequest().denyAll()
                 .and()
                 .csrf().disable();
         return http.build();
     }
 
-     @Bean
-     public UserDetailsService users(){
-         UserDetails user = User.builder()
-             .username("develop")
-             .password("123")
-             .roles("USER")
-         .build();
-
-         return new InMemoryUserDetailsManager(user);
-     }
+//     @Bean
+//     public UserDetailsService users(){
+//         UserDetails user = User.builder()
+//             .username("develop")
+//             .password("123")
+//             .roles("USER")
+//         .build();
+//
+//         return new InMemoryUserDetailsManager(user);
+//     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
