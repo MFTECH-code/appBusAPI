@@ -3,6 +3,7 @@ package br.com.appbus.api.model.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Entity
 @Table(name = "TB_BUS_USER")
 @SequenceGenerator(name = "SQ_BUS_USER", sequenceName = "SQ_BUS_USER", allocationSize = 1, initialValue = 1)
 public class User {
@@ -27,21 +28,24 @@ public class User {
     private String document;
 
     @Column(name = "DT_BIRTH", nullable = false, updatable = false)
-    private LocalDate birthDay;
+    private LocalDate birthDate;
 
     @Column(name = "NR_INDICATED_FRIENDS", nullable = false)
-    private int indicatedFriends;
+    private Integer indicatedFriends;
 
     @Column(name = "NR_SCORE", nullable = false)
-    private int score;
+    private Integer score;
 
-    public User(String name, String password, String email, String phone, String document, LocalDate birthDay, int indicatedFriends, int score) {
+    public User() {
+    }
+
+    public User(String name, String password, String email, String phone, String document, LocalDate birthDate, Integer indicatedFriends, Integer score) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.document = document;
-        this.birthDay = birthDay;
+        this.birthDate = birthDate;
         this.indicatedFriends = indicatedFriends;
         this.score = score;
     }
@@ -103,27 +107,27 @@ public class User {
         this.document = document;
     }
 
-    public LocalDate getBirthDay() {
-        return birthDay;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthDay(LocalDate birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public int getIndicatedFriends() {
+    public Integer getIndicatedFriends() {
         return indicatedFriends;
     }
 
-    public void setIndicatedFriends(int indicatedFriends) {
+    public void setIndicatedFriends(Integer indicatedFriends) {
         this.indicatedFriends = indicatedFriends;
     }
 
-    public int getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 }
