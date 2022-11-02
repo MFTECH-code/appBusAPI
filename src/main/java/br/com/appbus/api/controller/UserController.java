@@ -4,6 +4,7 @@ import br.com.appbus.api.model.dto.user.CreateUserDTO;
 import br.com.appbus.api.model.dto.user.ReadUserDTO;
 import br.com.appbus.api.model.dto.user.UpdateUserDTO;
 import br.com.appbus.api.model.entity.User;
+import br.com.appbus.api.model.mapper.UserMapper;
 import br.com.appbus.api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody CreateUserDTO userDTO) {
+    public ResponseEntity<ReadUserDTO> create(@RequestBody CreateUserDTO userDTO) {
         try {
             var res = service.create(userDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .header("findRoute", "/api/user/" + res.getId())
-                    .body(res);
+                    .body(UserMapper.readUser(res));
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.internalServerError().body(null);
