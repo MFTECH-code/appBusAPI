@@ -39,14 +39,4 @@ public class UserMapper {
                 user.getIndicatedFriends(),
                 user.getScore());
     }
-
-    public static User updateUser(UpdateUserDTO userDTO) {
-        return new User(
-                userDTO.name(),
-                userDTO.password(),
-                userDTO.email(),
-                userDTO.phone(),
-                userDTO.indicatedFriends(),
-                userDTO.score());
-    }
 }

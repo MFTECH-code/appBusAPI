@@ -1,9 +1,13 @@
 package br.com.appbus.api.service;
 
+import br.com.appbus.api.model.dto.creditCard.CreateCreditCardDTO;
+import br.com.appbus.api.model.dto.creditCard.ReadCreditCardDTO;
 import br.com.appbus.api.model.dto.user.CreateUserDTO;
 import br.com.appbus.api.model.dto.user.ReadUserDTO;
 import br.com.appbus.api.model.dto.user.UpdateUserDTO;
+import br.com.appbus.api.model.entity.CreditCard;
 import br.com.appbus.api.model.entity.User;
+import br.com.appbus.api.model.mapper.CreditCardMapper;
 import br.com.appbus.api.model.mapper.UserMapper;
 import br.com.appbus.api.model.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,6 +55,20 @@ public class UserService implements UserDetailsService {
     public ReadUserDTO getById(Long id) throws Exception {
         var user = findUser(id);
         return UserMapper.readUser(user);
+    }
+
+    public List<ReadCreditCardDTO> getUserCreditCards(Long id) throws Exception {
+        var user = findUser(id);
+        return user.getCreditCards().stream().map(CreditCardMapper::readCreditCard).toList();
+    }
+
+    public CreditCard addNewCreditCard(CreateCreditCardDTO creditCardDTO, Long id) throws Exception {
+        var user = findUser(id);
+        var creditCard = CreditCardMapper.createCreditCard(creditCardDTO);
+        user.addCreditCard(creditCard);
+        var res = repository.save(user);
+        var lastIndex = res.getCreditCards().size() - 1;
+        return res.getCreditCards().get(lastIndex);
     }
 
     public void update(UpdateUserDTO userDTO, Long id) throws Exception {

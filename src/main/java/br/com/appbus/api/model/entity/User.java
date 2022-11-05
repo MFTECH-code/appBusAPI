@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,6 +49,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "CD_ROLE"))
     private List<Role> roles;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CreditCard> creditCards = new ArrayList<>();
+
     public User() {
     }
 
@@ -69,6 +73,11 @@ public class User implements UserDetails {
         this.phone = phone;
         this.indicatedFriends = indicatedFriends;
         this.score = score;
+    }
+
+    public void addCreditCard(CreditCard creditCard) {
+        creditCard.setUser(this);
+        this.creditCards.add(creditCard);
     }
 
     public Long getId() {
@@ -149,6 +158,14 @@ public class User implements UserDetails {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<CreditCard> getCreditCards() {
+        return creditCards;
+    }
+
+    public void setCreditCards(List<CreditCard> creditCards) {
+        this.creditCards = creditCards;
     }
 
     @Override

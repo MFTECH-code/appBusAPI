@@ -1,15 +1,16 @@
 package br.com.appbus.api.controller;
 
+import br.com.appbus.api.model.dto.creditCard.CreateCreditCardDTO;
+import br.com.appbus.api.model.dto.creditCard.ReadCreditCardDTO;
 import br.com.appbus.api.model.dto.user.CreateUserDTO;
 import br.com.appbus.api.model.dto.user.ReadUserDTO;
 import br.com.appbus.api.model.dto.user.UpdateUserDTO;
-import br.com.appbus.api.model.entity.User;
+import br.com.appbus.api.model.mapper.CreditCardMapper;
 import br.com.appbus.api.model.mapper.UserMapper;
 import br.com.appbus.api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
 
 @RestController
@@ -31,6 +32,27 @@ public class UserController {
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
+    @PutMapping("/addNewCreditCard/{id}")
+    public ResponseEntity<ReadCreditCardDTO> addNewCreditCard(@RequestBody CreateCreditCardDTO creditCardDTO, @PathVariable Long id) {
+        try {
+            var res = service.addNewCreditCard(creditCardDTO, id);
+            return ResponseEntity.status(HttpStatus.CREATED).body(CreditCardMapper.readCreditCard(res));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
+    @GetMapping("/getCreditCards/{id}")
+    public ResponseEntity<Collection<ReadCreditCardDTO>> getUserCreditCards(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.getUserCreditCards(id));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
