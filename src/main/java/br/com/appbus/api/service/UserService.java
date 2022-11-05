@@ -1,12 +1,16 @@
 package br.com.appbus.api.service;
 
+import br.com.appbus.api.model.dto.busTicket.CreateBusTicketDTO;
+import br.com.appbus.api.model.dto.busTicket.ReadBusTicketDTO;
 import br.com.appbus.api.model.dto.creditCard.CreateCreditCardDTO;
 import br.com.appbus.api.model.dto.creditCard.ReadCreditCardDTO;
 import br.com.appbus.api.model.dto.user.CreateUserDTO;
 import br.com.appbus.api.model.dto.user.ReadUserDTO;
 import br.com.appbus.api.model.dto.user.UpdateUserDTO;
+import br.com.appbus.api.model.entity.BusTicket;
 import br.com.appbus.api.model.entity.CreditCard;
 import br.com.appbus.api.model.entity.User;
+import br.com.appbus.api.model.mapper.BusTicketMapper;
 import br.com.appbus.api.model.mapper.CreditCardMapper;
 import br.com.appbus.api.model.mapper.UserMapper;
 import br.com.appbus.api.model.repository.UserRepository;
@@ -69,6 +73,20 @@ public class UserService implements UserDetailsService {
         var res = repository.save(user);
         var lastIndex = res.getCreditCards().size() - 1;
         return res.getCreditCards().get(lastIndex);
+    }
+
+    public List<ReadBusTicketDTO> getUserBusTickets(Long id) throws Exception {
+        var user = findUser(id);
+        return user.getBusTickets().stream().map(BusTicketMapper::readBusTicket).toList();
+    }
+
+    public BusTicket addNewBusTicket(CreateBusTicketDTO busTicketDTO, Long id) throws Exception {
+        var user = findUser(id);
+        var busTicket = BusTicketMapper.createBusTicket(busTicketDTO);
+        user.addBusTicket(busTicket);
+        var res = repository.save(user);
+        var lastIndex = res.getBusTickets().size() - 1;
+        return res.getBusTickets().get(lastIndex);
     }
 
     public void update(UpdateUserDTO userDTO, Long id) throws Exception {

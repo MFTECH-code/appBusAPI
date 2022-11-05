@@ -52,6 +52,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CreditCard> creditCards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BusTicket> busTickets = new ArrayList<>();
+
     public User() {
     }
 
@@ -78,6 +81,11 @@ public class User implements UserDetails {
     public void addCreditCard(CreditCard creditCard) {
         creditCard.setUser(this);
         this.creditCards.add(creditCard);
+    }
+
+    public void addBusTicket(BusTicket busTicket) {
+        busTicket.setUser(this);
+        this.busTickets.add(busTicket);
     }
 
     public Long getId() {
@@ -166,6 +174,14 @@ public class User implements UserDetails {
 
     public void setCreditCards(List<CreditCard> creditCards) {
         this.creditCards = creditCards;
+    }
+
+    public List<BusTicket> getBusTickets() {
+        return busTickets;
+    }
+
+    public void setBusTickets(List<BusTicket> busTickets) {
+        this.busTickets = busTickets;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class CreditCardService {
         repository.save(creditCard);
     }
 
-    public void remove(Long id) throws Exception {
+    public void delete(Long id) throws Exception {
         var creditCard = findById(id);
         repository.delete(creditCard);
     }

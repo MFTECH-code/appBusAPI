@@ -1,24 +1,38 @@
 package br.com.appbus.api.controller;
 
+import br.com.appbus.api.model.dto.busTicket.RechargeDTO;
+import br.com.appbus.api.model.dto.busTicket.UpdateBusTicketDTO;
 import br.com.appbus.api.model.dto.creditCard.UpdateCreditCardDTO;
-import br.com.appbus.api.service.CreditCardService;
+import br.com.appbus.api.service.BusTicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/creditCard")
-public class CreditCardController {
-    private final CreditCardService service;
+@RequestMapping("/api/busTicket")
+public class BusTicketController {
 
-    public CreditCardController(CreditCardService service) {
+    private final BusTicketService service;
+
+    public BusTicketController(BusTicketService service) {
         this.service = service;
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@RequestBody UpdateCreditCardDTO creditCardDTO, @PathVariable Long id) {
+    @PostMapping
+    public ResponseEntity<Object> recharge(@RequestBody RechargeDTO rechargeDTO) {
         try {
-            service.update(creditCardDTO, id);
+            service.recharge(rechargeDTO);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@RequestBody UpdateBusTicketDTO busTicketDTO, @PathVariable Long id) {
+        try {
+            service.update(busTicketDTO, id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (Exception ex) {
             ex.printStackTrace();

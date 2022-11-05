@@ -1,10 +1,13 @@
 package br.com.appbus.api.controller;
 
+import br.com.appbus.api.model.dto.busTicket.CreateBusTicketDTO;
+import br.com.appbus.api.model.dto.busTicket.ReadBusTicketDTO;
 import br.com.appbus.api.model.dto.creditCard.CreateCreditCardDTO;
 import br.com.appbus.api.model.dto.creditCard.ReadCreditCardDTO;
 import br.com.appbus.api.model.dto.user.CreateUserDTO;
 import br.com.appbus.api.model.dto.user.ReadUserDTO;
 import br.com.appbus.api.model.dto.user.UpdateUserDTO;
+import br.com.appbus.api.model.mapper.BusTicketMapper;
 import br.com.appbus.api.model.mapper.CreditCardMapper;
 import br.com.appbus.api.model.mapper.UserMapper;
 import br.com.appbus.api.service.UserService;
@@ -46,10 +49,31 @@ public class UserController {
         }
     }
 
+    @PutMapping("/addNewBusTicket/{id}")
+    public ResponseEntity<ReadBusTicketDTO> addNewBusTicket(@RequestBody CreateBusTicketDTO busTicketDTO, @PathVariable Long id) {
+        try {
+            var res = service.addNewBusTicket(busTicketDTO, id);
+            return ResponseEntity.status(HttpStatus.CREATED).body(BusTicketMapper.readBusTicket(res));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
+    }
+
     @GetMapping("/getCreditCards/{id}")
     public ResponseEntity<Collection<ReadCreditCardDTO>> getUserCreditCards(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(service.getUserCreditCards(id));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/getBusTickets/{id}")
+    public ResponseEntity<Collection<ReadBusTicketDTO>> getUserBusTickets(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(service.getUserBusTickets(id));
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
