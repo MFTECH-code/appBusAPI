@@ -55,6 +55,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BusTicket> busTickets = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
+    private List<Evaluation> evaluations;
+
     public User() {
     }
 
