@@ -3,14 +3,12 @@ package br.com.appbus.api.controller;
 import br.com.appbus.api.model.dto.bus.CreateBusDTO;
 import br.com.appbus.api.model.dto.bus.ReadBusDTO;
 import br.com.appbus.api.model.dto.bus.UpdateBusDTO;
-import br.com.appbus.api.model.dto.user.UpdateUserDTO;
 import br.com.appbus.api.model.mapper.BusMapper;
 import br.com.appbus.api.service.BusService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.Collection;
 import java.util.List;
 

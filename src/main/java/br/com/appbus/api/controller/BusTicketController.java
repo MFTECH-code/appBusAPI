@@ -2,7 +2,6 @@ package br.com.appbus.api.controller;
 
 import br.com.appbus.api.model.dto.busTicket.RechargeDTO;
 import br.com.appbus.api.model.dto.busTicket.UpdateBusTicketDTO;
-import br.com.appbus.api.model.dto.creditCard.UpdateCreditCardDTO;
 import br.com.appbus.api.service.BusTicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

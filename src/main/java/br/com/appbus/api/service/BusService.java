@@ -6,6 +6,7 @@ import br.com.appbus.api.model.dto.bus.UpdateBusDTO;
 import br.com.appbus.api.model.dto.evaluation.ReadEvaluationDTO;
 import br.com.appbus.api.model.entity.Bus;
 import br.com.appbus.api.model.mapper.BusMapper;
+import br.com.appbus.api.model.mapper.EvaluationMapper;
 import br.com.appbus.api.model.repository.BusRepository;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,8 @@ public class BusService {
         var bus = repository.findByNumber(number).orElseThrow(() -> new Exception("Bus not found"));
         return evaluationService.getAll()
                 .stream()
-                .filter(e -> e.busId() == bus.getId())
+                .filter(e -> e.getBus().getId() == bus.getId())
+                .map(EvaluationMapper::readEvaluation)
                 .toList();
     }
 

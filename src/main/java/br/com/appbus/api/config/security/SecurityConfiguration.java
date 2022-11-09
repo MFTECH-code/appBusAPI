@@ -32,6 +32,8 @@ public class SecurityConfiguration {
                 .antMatchers(HttpMethod.POST, "/api/evaluation").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/evaluation").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/evaluation/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/evaluation/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/evaluation/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/h2/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/h2/**").permitAll()

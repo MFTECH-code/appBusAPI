@@ -3,6 +3,7 @@ package br.com.appbus.api.service;
 import br.com.appbus.api.model.dto.evaluation.CreateEvaluationDTO;
 import br.com.appbus.api.model.dto.evaluation.CreateEvaluationFromRequestDTO;
 import br.com.appbus.api.model.dto.evaluation.ReadEvaluationDTO;
+import br.com.appbus.api.model.dto.evaluation.UpdateEvaluationDTO;
 import br.com.appbus.api.model.entity.Bus;
 import br.com.appbus.api.model.entity.Evaluation;
 import br.com.appbus.api.model.entity.User;
@@ -38,8 +39,29 @@ public class EvaluationService {
         return evaluationRepository.save(EvaluationMapper.createEvaluation(createEvaluation));
     }
 
-    public List<ReadEvaluationDTO> getAll() {
-        return evaluationRepository.findAll().stream().map(EvaluationMapper::readEvaluation).toList();
+    public List<Evaluation> getAll() {
+        return evaluationRepository.findAll();
+    }
+
+    public void update(UpdateEvaluationDTO evaluationDTO, Long userId, Long busId) throws Exception {
+        var evaluation = getAll()
+                .stream()
+                .filter(e -> e.getUser().getId() == userId && e.getBus().getId() == busId)
+                .findFirst().orElseThrow(() -> new Exception("Evaluation not found"));
+
+        evaluation.setComment(evaluationDTO.comment());
+        evaluation.setEvaluationNote(evaluationDTO.evaluationNote());
+
+        evaluationRepository.save(evaluation);
+    }
+
+    public void delete(Long userId, Long busId) throws Exception {
+        var evaluation = getAll()
+                .stream()
+                .filter(e -> e.getUser().getId() == userId && e.getBus().getId() == busId)
+                .findFirst().orElseThrow(() -> new Exception("Evaluation not found"));
+
+        evaluationRepository.delete(evaluation);
     }
 
     private HashMap<String, Object> getKeys(Long userId, Long busId) throws Exception {

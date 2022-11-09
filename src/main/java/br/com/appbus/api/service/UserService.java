@@ -4,6 +4,7 @@ import br.com.appbus.api.model.dto.busTicket.CreateBusTicketDTO;
 import br.com.appbus.api.model.dto.busTicket.ReadBusTicketDTO;
 import br.com.appbus.api.model.dto.creditCard.CreateCreditCardDTO;
 import br.com.appbus.api.model.dto.creditCard.ReadCreditCardDTO;
+import br.com.appbus.api.model.dto.evaluation.ReadEvaluationDTO;
 import br.com.appbus.api.model.dto.user.CreateUserDTO;
 import br.com.appbus.api.model.dto.user.ReadUserDTO;
 import br.com.appbus.api.model.dto.user.UpdateUserDTO;
@@ -12,6 +13,7 @@ import br.com.appbus.api.model.entity.CreditCard;
 import br.com.appbus.api.model.entity.User;
 import br.com.appbus.api.model.mapper.BusTicketMapper;
 import br.com.appbus.api.model.mapper.CreditCardMapper;
+import br.com.appbus.api.model.mapper.EvaluationMapper;
 import br.com.appbus.api.model.mapper.UserMapper;
 import br.com.appbus.api.model.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,12 +27,14 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
+    private final EvaluationService evaluationService;
     private final PasswordEncoder passwordEncoder;
 
 
-    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, EvaluationService evaluationService) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.evaluationService = evaluationService;
     }
 
     @Override
@@ -78,6 +82,15 @@ public class UserService implements UserDetailsService {
     public List<ReadBusTicketDTO> getUserBusTickets(Long id) throws Exception {
         var user = findUser(id);
         return user.getBusTickets().stream().map(BusTicketMapper::readBusTicket).toList();
+    }
+
+    public List<ReadEvaluationDTO> getUserEvaluations(Long id) throws Exception {
+        var user = findUser(id);
+        return evaluationService.getAll()
+                .stream()
+                .filter(e -> e.getUser().getId() == user.getId())
+                .map(EvaluationMapper::readEvaluation)
+                .toList();
     }
 
     public BusTicket addNewBusTicket(CreateBusTicketDTO busTicketDTO, Long id) throws Exception {
