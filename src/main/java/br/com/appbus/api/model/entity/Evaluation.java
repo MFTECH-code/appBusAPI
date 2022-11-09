@@ -2,6 +2,7 @@ package br.com.appbus.api.model.entity;
 
 import br.com.appbus.api.model.entity.pk.EvaluationPK;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -12,7 +13,9 @@ import java.util.Objects;
 public class Evaluation {
     @EmbeddedId
     private EvaluationPK id = new EvaluationPK();
+    @Column(name = "ds_comment")
     private String comment;
+    @Column(name = "vl_evaluation")
     private Integer evaluationNote;
 
     public Evaluation() {
